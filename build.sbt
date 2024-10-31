@@ -1,14 +1,22 @@
-scalaVersion := "2.13.10"
+ThisBuild / scalaVersion     := "2.13.7"
+ThisBuild / version          := "2.5.0"
+ThisBuild / organization     := "edu.berkeley.cs"
 
-scalacOptions ++= Seq(
-  "-deprecation",
-  "-feature",
-  "-unchecked",
-  // "-Xfatal-warnings",
-  "-language:reflectiveCalls",
-)
+val chiselVersion = "6.5.0"
+val chiseltestVersion = "6.0.0"
 
-val chiselVersion = "3.5.6"
-addCompilerPlugin("edu.berkeley.cs" %% "chisel3-plugin" % chiselVersion cross CrossVersion.full)
-libraryDependencies += "edu.berkeley.cs" %% "chisel3" % chiselVersion
-libraryDependencies += "edu.berkeley.cs" %% "chiseltest" % "0.5.6"
+lazy val root = (project in file("."))
+  .settings(
+    name := "riscv-mini",
+    libraryDependencies ++= Seq(
+      "org.chipsalliance" %% "chisel" % chiselVersion,
+      "edu.berkeley.cs" %% "chiseltest" % chiseltestVersion % "test"
+    ),
+    scalacOptions ++= Seq(
+      "-language:reflectiveCalls",
+      "-deprecation",
+      "-feature",
+      "-Xcheckinit",
+    ),
+    addCompilerPlugin("org.chipsalliance" % "chisel-plugin" % chiselVersion cross CrossVersion.full),
+  )
